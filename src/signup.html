@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account — Neura Bank</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <div class="phone">
+      <div class="island" aria-hidden="true"></div>
+      <div class="status-bar">
+        <span class="time" data-role="status-time">9:41</span>
+        <div class="status-icons" aria-hidden="true">
+          <span class="icon-signal" title="Signal">
+            <span></span><span></span><span></span><span></span>
+          </span>
+          <span class="icon-wifi" title="Wi-Fi">
+            <svg viewBox="0 0 24 24" width="20" height="20" role="presentation">
+              <path d="M2 9c5.5-5.5 14.5-5.5 20 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M6 13c3.5-3.5 8.5-3.5 12 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M10 17c1.5-1.5 4-1.5 5.5 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="12" cy="19.5" r="1.3" fill="currentColor"/>
+            </svg>
+          </span>
+          <span class="icon-battery" title="Battery">
+            <span class="battery-body"><span class="battery-level"></span></span>
+            <span class="battery-cap"></span>
+          </span>
+        </div>
+      </div>
+
+      <div class="screen">
+        <header class="header">
+          <a class="back-btn" href="index.html" aria-label="Back">←</a>
+          <img class="logo-small" src="../assets/logo.svg" alt="Neura Bank logo">
+          <div class="title-stack">
+            <div class="brand-name">Neura Bank</div>
+            <div class="muted">Create your account</div>
+          </div>
+        </header>
+
+        <main class="content card">
+          <div class="page-title">Create your account</div>
+          <div class="muted">Create login credentials. You can enable biometrics after setup.</div>
+          <div class="spacer-sm"></div>
+          <div class="field">
+            <label for="full-name">Full name</label>
+            <input class="input" id="full-name" name="full-name" type="text" placeholder="Jane Doe" data-account-field required>
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input class="input" id="email" name="email" type="email" placeholder="name@email.com" data-account-field required>
+          </div>
+          <div class="field">
+            <label for="mobile">Mobile</label>
+            <input class="input" id="mobile" name="mobile" type="tel" placeholder="+44 7xxx xxxxxx" data-account-field required>
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <input class="input" id="password" name="password" type="password" placeholder="••••••••" data-account-field required>
+          </div>
+          <div class="actions">
+            <a class="button primary is-disabled" data-account-continue href="consent.html" aria-disabled="true" tabindex="-1">Continue</a>
+            <a class="button ghost" href="signin.html">Already have an account? Sign in</a>
+          </div>
+        </main>
+
+        <footer class="footer">
+          <small>Prototype demo — not a real bank.</small>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connect Accounts — Neura Bank</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <div class="phone">
+      <div class="island" aria-hidden="true"></div>
+      <div class="status-bar">
+        <span class="time" data-role="status-time">9:41</span>
+        <div class="status-icons" aria-hidden="true">
+          <span class="icon-signal" title="Signal">
+            <span></span><span></span><span></span><span></span>
+          </span>
+          <span class="icon-wifi" title="Wi-Fi">
+            <svg viewBox="0 0 24 24" width="20" height="20" role="presentation">
+              <path d="M2 9c5.5-5.5 14.5-5.5 20 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M6 13c3.5-3.5 8.5-3.5 12 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M10 17c1.5-1.5 4-1.5 5.5 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="12" cy="19.5" r="1.3" fill="currentColor"/>
+            </svg>
+          </span>
+          <span class="icon-battery" title="Battery">
+            <span class="battery-body"><span class="battery-level"></span></span>
+            <span class="battery-cap"></span>
+          </span>
+        </div>
+      </div>
+
+      <div class="screen">
+        <header class="header">
+          <button class="back-btn" data-back aria-label="Back">←</button>
+          <img class="logo-small" src="../assets/logo.svg" alt="Neura Bank logo">
+          <div class="title-stack">
+            <div class="brand-name">Neura Bank</div>
+            <div class="muted">Connect your banks</div>
+          </div>
+        </header>
+
+        <main class="content card">
+          <div class="page-title">Connect your banks</div>
+          <div class="muted">Link accounts securely to power Insights, Smart Money Moves, and international payment optimisation.</div>
+          <div class="spacer-sm"></div>
+          <div class="tile-grid" data-bank-grid>
+            <button class="tile" type="button" data-bank-option>HSBC</button>
+            <button class="tile" type="button" data-bank-option>Barclays</button>
+            <button class="tile" type="button" data-bank-option>Monzo</button>
+            <button class="tile" type="button" data-bank-option>Lloyds</button>
+            <button class="tile" type="button" data-bank-option>Nationwide</button>
+          </div>
+          <div class="spacer-sm"></div>
+          <div class="status-chip">
+            <span class="spinner" aria-hidden="true" data-connect-spinner></span>
+            <span data-connect-status>Ready to connect</span>
+          </div>
+          <div class="actions">
+            <button class="button primary" type="button" data-connect>Connect accounts</button>
+            <a class="button secondary is-disabled" href="complete.html" data-connect-continue>Continue</a>
+            <a class="button ghost" href="complete.html" data-connect-skip>Skip for now</a>
+          </div>
+        </main>
+
+        <footer class="footer">
+          <small>Prototype demo — not a real bank.</small>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <div class="connect-modal" data-connect-modal hidden>
+    <div class="connect-modal__backdrop"></div>
+    <div class="connect-modal__content" role="dialog" aria-live="polite">
+      <div class="connect-loader">
+        <div class="connect-loader__ring"></div>
+        <div class="connect-loader__ring connect-loader__ring--inner"></div>
+      </div>
+      <div class="modal-text">Connecting…</div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

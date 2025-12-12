@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Neura Bank — Welcome</title>
-  <!-- Dev: python -m http.server 8000 -->
+  <title>Privacy & Consent — Neura Bank</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -33,36 +32,40 @@
       </div>
 
       <div class="screen">
-        <header class="hero">
-          <img class="logo-img" src="../assets/logo.svg" alt="Neura Bank logo" />
-          <div class="brand">
+        <header class="header">
+          <button class="back-btn" data-back aria-label="Back">←</button>
+          <img class="logo-small" src="../assets/logo.svg" alt="Neura Bank logo">
+          <div class="title-stack">
             <div class="brand-name">Neura Bank</div>
-            <div class="tagline">Banking that learns you.</div>
+            <div class="muted">Privacy & permissions</div>
           </div>
         </header>
 
-        <section class="features">
-          <article class="card">
-            <h3>⚡ Open an account in minutes</h3>
-            <p>Verify once and start moving money instantly.</p>
-          </article>
-          <article class="card">
-            <h3>🤖 AI-powered money decisions</h3>
-            <p>Smart nudges help you save, invest, and stay on track.</p>
-          </article>
-          <article class="card">
-            <h3>🌍 All your finances, one place</h3>
-            <p>Connect cards, loans, and goals for a unified view.</p>
-          </article>
-        </section>
+        <main class="content card">
+          <div class="page-title">Privacy & permissions</div>
+          <div class="notice">You can change permissions later.</div>
+          <div class="spacer-sm"></div>
 
-        <section class="actions">
-          <a class="button primary" href="signup.html">Get Started</a>
-          <a class="button ghost" href="signin.html">Sign In</a>
-        </section>
+          <label class="checkbox-row">
+            <input type="checkbox" data-consent-required>
+            <span>I agree to Terms &amp; Privacy Policy (required)</span>
+          </label>
+          <label class="checkbox-row">
+            <input type="checkbox" data-consent-required>
+            <span>I consent to identity verification (KYC/AML) (required)</span>
+          </label>
+          <label class="checkbox-row">
+            <input type="checkbox">
+            <span>Enable Open Banking to power Insights &amp; Smart Payments (PSD2 AISP/PISP)</span>
+          </label>
+
+          <div class="actions">
+            <a class="button primary is-disabled" data-consent-continue href="kyc-method.html" aria-disabled="true" tabindex="-1">Agree &amp; continue</a>
+          </div>
+        </main>
 
         <footer class="footer">
-          <small>FTDBB A1WA Prototype - © Rohan Krishna</small>
+          <small>Prototype demo — not a real bank.</small>
         </footer>
       </div>
     </div>
