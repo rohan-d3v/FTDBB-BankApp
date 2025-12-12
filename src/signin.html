@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign in — Neura Bank</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <div class="phone">
+      <div class="island" aria-hidden="true"></div>
+      <div class="status-bar">
+        <span class="time" data-role="status-time">9:41</span>
+        <div class="status-icons" aria-hidden="true">
+          <span class="icon-signal" title="Signal">
+            <span></span><span></span><span></span><span></span>
+          </span>
+          <span class="icon-wifi" title="Wi-Fi">
+            <svg viewBox="0 0 24 24" width="20" height="20" role="presentation">
+              <path d="M2 9c5.5-5.5 14.5-5.5 20 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M6 13c3.5-3.5 8.5-3.5 12 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M10 17c1.5-1.5 4-1.5 5.5 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="12" cy="19.5" r="1.3" fill="currentColor"/>
+            </svg>
+          </span>
+          <span class="icon-battery" title="Battery">
+            <span class="battery-body"><span class="battery-level"></span></span>
+            <span class="battery-cap"></span>
+          </span>
+        </div>
+      </div>
+
+      <div class="screen split-auth">
+        <header class="header brand-header">
+          <a class="back-btn" href="index.html" aria-label="Back to welcome">←</a>
+          <img class="logo-small" src="../assets/logo.svg" alt="Neura Bank logo">
+          <div class="title-stack">
+            <div class="brand-name">Sign in</div>
+            <div class="muted">Secure access</div>
+          </div>
+        </header>
+
+        <section class="sheet signin-sheet">
+          <form class="auth-form" data-auth-form novalidate>
+            <label class="field">
+              <span>Email</span>
+              <input class="input" type="email" name="email" placeholder="name@example.com" autocomplete="email" data-auth-email>
+            </label>
+            <div class="input-error" data-email-error hidden>Please enter your email</div>
+
+            <div class="actions primary-only" data-primary-actions>
+              <button class="button primary" type="button" data-auth-continue>Continue</button>
+            </div>
+
+            <div class="actions two-up" data-alt-actions hidden>
+              <button class="button primary" type="button" data-send-otp>Send OTP</button>
+              <button class="button secondary" type="button" data-bio>Biometrics</button>
+            </div>
+
+            <div class="auth-links">
+              <a href="#" data-forgot>Forgot password?</a>
+              <a href="signup.html">Create account</a>
+            </div>
+          </form>
+        </section>
+      </div>
+
+      <div class="modal" data-auth-modal data-registered-modal hidden>
+        <div class="modal-backdrop" data-close-modal></div>
+        <div class="modal-content">
+          <button class="modal-close" type="button" data-close-modal aria-label="Close">×</button>
+          <div class="section-title">Your email is already registered to this device</div>
+          <p class="muted">Choose how you’d like to sign in</p>
+          <button class="button primary" type="button" data-registered-accept>OK</button>
+        </div>
+      </div>
+
+      <div class="modal" data-auth-modal data-otp-modal hidden>
+        <div class="modal-backdrop" data-close-modal></div>
+        <div class="modal-content">
+          <button class="modal-close" type="button" data-close-modal aria-label="Close">×</button>
+          <div class="section-title">Enter OTP</div>
+          <p class="muted">We sent a 6-digit code to your email</p>
+          <div class="otp-grid" data-otp-grid>
+            <input class="otp-digit" type="text" inputmode="numeric" maxlength="1" data-otp-digit>
+            <input class="otp-digit" type="text" inputmode="numeric" maxlength="1" data-otp-digit>
+            <input class="otp-digit" type="text" inputmode="numeric" maxlength="1" data-otp-digit>
+            <input class="otp-digit" type="text" inputmode="numeric" maxlength="1" data-otp-digit>
+            <input class="otp-digit" type="text" inputmode="numeric" maxlength="1" data-otp-digit>
+            <input class="otp-digit" type="text" inputmode="numeric" maxlength="1" data-otp-digit>
+          </div>
+          <button class="button primary" type="button" data-otp-verify>Verify</button>
+        </div>
+      </div>
+
+      <div class="modal" data-auth-modal data-bio-modal hidden>
+        <div class="modal-backdrop" data-close-modal></div>
+        <div class="modal-content">
+          <button class="modal-close" type="button" data-close-modal aria-label="Close">×</button>
+          <div class="section-title">Biometric authentication</div>
+          <p class="muted">Confirm with Face ID / Fingerprint</p>
+          <div class="bio-icon" aria-hidden="true">
+            <span class="bio-pulse"></span>
+          </div>
+          <div class="muted subtle" data-bio-status>Authenticating…</div>
+        </div>
+      </div>
+
+      <div class="modal" data-auth-modal data-success-modal hidden>
+        <div class="modal-backdrop" data-close-modal></div>
+        <div class="modal-content success-card">
+          <button class="modal-close" type="button" data-close-modal aria-label="Close">×</button>
+          <div class="tick-circle" aria-hidden="true" data-success-tick>
+            <svg viewBox="0 0 52 52">
+              <path class="tick-path" fill="none" stroke="currentColor" stroke-width="5" d="M14 27l8 8 16-18" />
+            </svg>
+          </div>
+          <div class="section-title">Login Successful</div>
+          <p class="muted subtle">Redirecting to your dashboard…</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Insights — Neura Bank</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <div class="phone">
+      <div class="island" aria-hidden="true"></div>
+      <div class="status-bar">
+        <span class="time" data-role="status-time">9:41</span>
+        <div class="status-icons" aria-hidden="true">
+          <span class="icon-signal" title="Signal">
+            <span></span><span></span><span></span><span></span>
+          </span>
+          <span class="icon-wifi" title="Wi-Fi">
+            <svg viewBox="0 0 24 24" width="20" height="20" role="presentation">
+              <path d="M2 9c5.5-5.5 14.5-5.5 20 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M6 13c3.5-3.5 8.5-3.5 12 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M10 17c1.5-1.5 4-1.5 5.5 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="12" cy="19.5" r="1.3" fill="currentColor"/>
+            </svg>
+          </span>
+          <span class="icon-battery" title="Battery">
+            <span class="battery-body"><span class="battery-level"></span></span>
+            <span class="battery-cap"></span>
+          </span>
+        </div>
+      </div>
+
+      <div class="screen has-bottom-nav">
+        <header class="header brand-header">
+          <img class="logo-small" src="../assets/logo.svg" alt="Neura Bank logo">
+          <div class="title-stack">
+            <div class="brand-name">Insights</div>
+            <div class="muted">Dense intelligence for your money</div>
+          </div>
+          <span class="pill pill-muted">Live</span>
+        </header>
+
+        <section class="card insight-card">
+          <div class="section-title">Spending Over Time</div>
+          <div class="mini-chart">
+            <div class="bar" style="--bar-height: 78%" aria-label="Food spend bar">
+              <span class="bar-label">Food</span>
+            </div>
+            <div class="bar is-muted" style="--bar-height: 64%" aria-label="Bills spend bar">
+              <span class="bar-label">Bills</span>
+            </div>
+            <div class="bar warn" style="--bar-height: 50%" aria-label="Entertainment spend bar">
+              <span class="bar-label">Entertainment</span>
+            </div>
+            <div class="bar info" style="--bar-height: 42%" aria-label="Transport spend bar">
+              <span class="bar-label">Transport</span>
+            </div>
+          </div>
+          <div class="legend">
+            <span class="legend-item"><span class="legend-dot" style="--dot-color: var(--accent)"></span>Food</span>
+            <span class="legend-item"><span class="legend-dot" style="--dot-color: #b7d7c9"></span>Bills</span>
+            <span class="legend-item"><span class="legend-dot" style="--dot-color: var(--warn)"></span>Entertainment</span>
+            <span class="legend-item"><span class="legend-dot" style="--dot-color: var(--info)"></span>Transport</span>
+          </div>
+        </section>
+
+        <section class="card insight-card">
+          <div class="section-title">Savings Goals Progress</div>
+          <div class="goal-card">
+            <div class="goal-row">
+              <span>Home deposit</span>
+              <span class="goal-percent">32%</span>
+            </div>
+            <div class="progress">
+              <div class="progress-fill" style="width: 32%;"></div>
+            </div>
+            <div class="muted">£9,200 to go</div>
+          </div>
+          <div class="goal-card">
+            <div class="goal-row">
+              <span>Holiday</span>
+              <span class="goal-percent">58%</span>
+            </div>
+            <div class="progress">
+              <div class="progress-fill" style="width: 58%;"></div>
+            </div>
+            <div class="muted">£1,140 to go</div>
+          </div>
+        </section>
+
+        <section class="card insight-card">
+          <div class="section-title">Saving Opportunities</div>
+          <ul class="bullet-list">
+            <li>Cancel unused subscriptions — save £38/month</li>
+            <li>Switch broadband — save £22/month</li>
+          </ul>
+          <a class="pill pill-outline" href="#">Review</a>
+        </section>
+
+        <section class="card insight-card gauge-card" data-spend-modal-open>
+          <div class="section-title">Spend Analyser</div>
+          <div class="gauge-shell">
+            <div class="gauge">
+              <div class="needle" aria-hidden="true"></div>
+            </div>
+            <div class="gauge-label">Dining spend higher than usual</div>
+          </div>
+          <div class="muted subtle">Tap to view breakdown</div>
+        </section>
+
+        <section class="card insight-card">
+          <div class="section-title">Bills &amp; Upcoming Payments</div>
+          <ul class="bills-list">
+            <li>
+              <div>
+                <div class="bill-name">Rent</div>
+                <div class="muted subtle">Due 3 May</div>
+              </div>
+              <div class="bill-status ok">£1,200 ✓</div>
+            </li>
+            <li>
+              <div>
+                <div class="bill-name">Energy</div>
+                <div class="muted subtle">Due 7 May</div>
+              </div>
+              <div class="bill-status warn">£180 ⚠</div>
+            </li>
+            <li>
+              <div>
+                <div class="bill-name">Mobile</div>
+                <div class="muted subtle">Due 11 May</div>
+              </div>
+              <div class="bill-status ok">£28 ✓</div>
+            </li>
+          </ul>
+          <div class="muted subtle">Transfer £120 from Holiday pot to stay covered.</div>
+        </section>
+      </div>
+
+      <div class="modal" data-spend-modal hidden>
+        <div class="modal-backdrop" data-close-modal></div>
+        <div class="modal-content">
+          <button class="modal-close" type="button" data-close-modal aria-label="Close">×</button>
+          <div class="section-title">Unusual Spend</div>
+          <p class="muted">Dining spend 26% higher vs last month.</p>
+          <ul class="bullet-list">
+            <li>£86 at Oak Street Eats — try weekly budget cap</li>
+            <li>£42 on delivery — bundle orders to save fees</li>
+            <li>£28 coffees — redirect £20/week to savings</li>
+          </ul>
+          <a class="pill pill-outline" href="smart-invest.html">Automate savings</a>
+        </div>
+      </div>
+
+      <nav class="bottom-nav" data-bottom-nav>
+        <a class="nav-item" href="dashboard.html" data-nav-target="dashboard.html">
+          <span class="nav-icon" aria-hidden="true">🏠</span>
+          <span class="nav-label">Home</span>
+        </a>
+        <a class="nav-item" href="payments.html" data-nav-target="payments.html">
+          <span class="nav-icon" aria-hidden="true">💸</span>
+          <span class="nav-label">Payments</span>
+        </a>
+        <a class="nav-item" href="insights.html" data-nav-target="insights.html">
+          <span class="nav-icon" aria-hidden="true">📈</span>
+          <span class="nav-label">Insights</span>
+        </a>
+        <a class="nav-item" href="net-worth.html" data-nav-target="net-worth.html">
+          <span class="nav-icon" aria-hidden="true">💰</span>
+          <span class="nav-label">Net Worth</span>
+        </a>
+        <a class="nav-item" href="smart-invest.html" data-nav-target="smart-invest.html">
+          <span class="nav-icon" aria-hidden="true">🤖</span>
+          <span class="nav-label">Smart Invest</span>
+        </a>
+      </nav>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

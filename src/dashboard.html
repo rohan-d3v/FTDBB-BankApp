@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Neura Bank</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <div class="phone">
+      <div class="island" aria-hidden="true"></div>
+      <div class="status-bar">
+        <span class="time" data-role="status-time">9:41</span>
+        <div class="status-icons" aria-hidden="true">
+          <span class="icon-signal" title="Signal">
+            <span></span><span></span><span></span><span></span>
+          </span>
+          <span class="icon-wifi" title="Wi-Fi">
+            <svg viewBox="0 0 24 24" width="20" height="20" role="presentation">
+              <path d="M2 9c5.5-5.5 14.5-5.5 20 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M6 13c3.5-3.5 8.5-3.5 12 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M10 17c1.5-1.5 4-1.5 5.5 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="12" cy="19.5" r="1.3" fill="currentColor"/>
+            </svg>
+          </span>
+          <span class="icon-battery" title="Battery">
+            <span class="battery-body"><span class="battery-level"></span></span>
+            <span class="battery-cap"></span>
+          </span>
+        </div>
+      </div>
+
+      <div class="screen has-bottom-nav">
+        <header class="header brand-header">
+          <img class="logo-small" src="../assets/logo.svg" alt="Neura Bank logo">
+          <div class="title-stack">
+            <div class="brand-name">Neura Bank</div>
+            <div class="muted">All accounts in one place</div>
+          </div>
+          <div class="pill pill-ghost">Secure · AI-ready</div>
+        </header>
+
+        <section class="hero-strip">
+          <div class="section-heading">
+            <div class="section-title">Overview</div>
+            <div class="muted">Scroll cards to explore</div>
+          </div>
+          <div class="carousel-track">
+            <div class="hero-card account-card">
+              <div class="hero-label">Savings Account — Neura Bank</div>
+              <div class="hero-balance">£8,420.15</div>
+              <div class="hero-sub">Instant access</div>
+              <div class="hero-actions">
+                <a class="pill pill-outline" href="payments.html">View</a>
+              </div>
+            </div>
+            <a class="hero-card wealth-card" href="net-worth.html">
+              <div class="hero-label">Your Wealth</div>
+              <div class="hero-balance">£18,258.90</div>
+              <div class="hero-sub">Across accounts &amp; assets</div>
+              <div class="hero-actions">
+                <span class="pill pill-outline">See net worth</span>
+              </div>
+            </a>
+          </div>
+        </section>
+
+        <section class="sheet quick-actions">
+          <div class="sheet-header">
+            <div>
+              <div class="section-title dark">Quick Actions</div>
+              <div class="muted">Keep momentum today</div>
+            </div>
+            <span class="pill pill-muted">Recommended</span>
+          </div>
+          <div class="quick-grid">
+            <a class="quick-tile" href="payments.html">
+              <span class="tile-icon">📤</span>
+              <div class="tile-title">Send</div>
+              <div class="tile-sub">Move money</div>
+            </a>
+            <a class="quick-tile" href="insights.html">
+              <span class="tile-icon">📊</span>
+              <div class="tile-title">Insights</div>
+              <div class="tile-sub">Your spend</div>
+            </a>
+            <a class="quick-tile" href="net-worth.html">
+              <span class="tile-icon">💎</span>
+              <div class="tile-title">Net Worth</div>
+              <div class="tile-sub">Totals</div>
+            </a>
+          </div>
+        </section>
+
+        <div class="quick-links-row">
+          <a class="action-chip" href="payments.html">Send money</a>
+          <a class="action-chip" href="insights.html">View insights</a>
+          <a class="action-chip" href="smart-invest.html">Smart invest</a>
+        </div>
+
+        <a class="ai-card" href="insights.html">
+          <div>
+            <div class="ai-label">AI insight</div>
+            <div class="ai-text">You could save £420/year by optimising subscriptions</div>
+          </div>
+          <span class="chevron" aria-hidden="true">›</span>
+        </a>
+      </div>
+
+      <nav class="bottom-nav" data-bottom-nav>
+        <a class="nav-item" href="dashboard.html" data-nav-target="dashboard.html">
+          <span class="nav-icon" aria-hidden="true">🏠</span>
+          <span class="nav-label">Home</span>
+        </a>
+        <a class="nav-item" href="payments.html" data-nav-target="payments.html">
+          <span class="nav-icon" aria-hidden="true">💸</span>
+          <span class="nav-label">Payments</span>
+        </a>
+        <a class="nav-item" href="insights.html" data-nav-target="insights.html">
+          <span class="nav-icon" aria-hidden="true">📈</span>
+          <span class="nav-label">Insights</span>
+        </a>
+        <a class="nav-item" href="net-worth.html" data-nav-target="net-worth.html">
+          <span class="nav-icon" aria-hidden="true">💰</span>
+          <span class="nav-label">Net Worth</span>
+        </a>
+        <a class="nav-item" href="smart-invest.html" data-nav-target="smart-invest.html">
+          <span class="nav-icon" aria-hidden="true">🤖</span>
+          <span class="nav-label">Smart Invest</span>
+        </a>
+      </nav>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
