@@ -1,12 +1,25 @@
 function resetOnReload() {
-  const navEntries = performance.getEntriesByType ? performance.getEntriesByType("navigation") : [];
-  const navType = navEntries.length ? navEntries[0].type : performance.navigation?.type === performance.navigation.TYPE_RELOAD ? "reload" : "navigate";
-  if (navType === "reload") {
-    localStorage.clear();
-    const path = window.location.pathname || "";
-    if (!path.endsWith("/index.html") && !path.endsWith("index.html") && !path.endsWith("/")) {
-      window.location.replace("index.html");
+  try {
+    let isReload = false;
+    if (performance.getEntriesByType) {
+      const entries = performance.getEntriesByType("navigation");
+      if (entries && entries.length) {
+        isReload = entries[0].type === "reload";
+      }
     }
+    if (!isReload && performance.navigation) {
+      isReload = performance.navigation.type === performance.navigation.TYPE_RELOAD;
+    }
+    if (isReload) {
+      localStorage.clear();
+      sessionStorage.clear();
+      const path = window.location.pathname || "";
+      if (!path.endsWith("/index.html") && !path.endsWith("index.html") && !path.endsWith("/")) {
+        window.location.replace("index.html");
+      }
+    }
+  } catch {
+    // ignore detection errors
   }
 }
 
@@ -15,7 +28,7 @@ resetOnReload();
 function updateStatusTime() {
   const nodes = document.querySelectorAll('[data-role="status-time"]');
   if (!nodes.length) return;
-const now = new Date();
+  const now = new Date();
   const hh = String(now.getHours()).padStart(2, "0");
   const mm = String(now.getMinutes()).padStart(2, "0");
   nodes.forEach((node) => {
@@ -88,6 +101,7 @@ function initCaptureFlow() {
   const rescanBtn = document.querySelector("[data-rescan]");
   const frameText = document.querySelector("[data-frame-text]");
   if (!captureBtn || !continueBtn || !frame) return;
+  const storage = window.sessionStorage || window.localStorage;
 
   const setCaptured = (captured) => {
     continueBtn.classList.toggle("is-disabled", !captured);
@@ -100,7 +114,7 @@ function initCaptureFlow() {
       frameText.textContent = captured ? "Placeholder ID" : "Align your ID inside the frame";
       frameText.classList.toggle("placeholder", captured);
     }
-    localStorage.setItem("documentCaptureCompleted", String(captured));
+    storage.setItem("documentCaptureCompleted", String(captured));
   };
 
   captureBtn.addEventListener("click", () => {
@@ -124,7 +138,7 @@ function initCaptureFlow() {
     });
   }
 
-  const storedState = localStorage.getItem("documentCaptureCompleted") === "true";
+  const storedState = storage.getItem("documentCaptureCompleted") === "true";
   setCaptured(storedState);
 }
 
@@ -135,6 +149,7 @@ function initSelfieCaptureFlow() {
   const resetBtn = document.querySelector("[data-selfie-reset]");
   const textEl = document.querySelector("[data-selfie-text]");
   if (!captureBtn || !continueBtn || !frame) return;
+  const storage = window.sessionStorage || window.localStorage;
 
   const setCaptured = (captured) => {
     continueBtn.classList.toggle("is-disabled", !captured);
@@ -147,7 +162,7 @@ function initSelfieCaptureFlow() {
       textEl.textContent = captured ? "Placeholder selfie" : "Center your face";
       textEl.classList.toggle("placeholder", captured);
     }
-    localStorage.setItem("selfieCaptureCompleted", String(captured));
+    storage.setItem("selfieCaptureCompleted", String(captured));
   };
 
   captureBtn.addEventListener("click", () => {
@@ -166,7 +181,7 @@ function initSelfieCaptureFlow() {
     });
   }
 
-  const storedState = localStorage.getItem("selfieCaptureCompleted") === "true";
+  const storedState = storage.getItem("selfieCaptureCompleted") === "true";
   setCaptured(storedState);
 }
 function initGoalChips() {
@@ -174,37 +189,67 @@ function initGoalChips() {
   if (!chips.length) return;
   const storageKey = "selectedGoals";
 
-  const getId = (chip) => chip.dataset.goalId || chip.textContent.trim();
+  const normalize = (value) => (value || "").trim().toLowerCase();
+  const getId = (chip) => normalize(chip.dataset.goalId || chip.textContent.trim());
+  const defaultIds = Array.from(chips)
+    .filter((chip) => chip.hasAttribute("data-goal-default"))
+    .map(getId);
 
-  const applyStoredSelection = () => {
-    const stored = localStorage.getItem(storageKey);
-    if (!stored) return;
-    const selectedIds = JSON.parse(stored);
+  const fallbackIds = () => {
+    if (defaultIds.length) return defaultIds;
+    return chips.length ? [getId(chips[0])] : [];
+  };
+
+  const applySelection = (ids) => {
     chips.forEach((chip) => {
-      const id = getId(chip);
-      chip.classList.toggle("selected", selectedIds.includes(id));
+      const chipId = getId(chip);
+      const fallbackText = normalize(chip.textContent);
+      const isSelected = ids.some((id) => id === chipId || id === fallbackText);
+      chip.classList.toggle("selected", isSelected);
     });
   };
 
-  const persistSelection = () => {
-    const selected = Array.from(chips)
-      .filter((chip) => chip.classList.contains("selected"))
-      .map(getId);
-    localStorage.setItem(storageKey, JSON.stringify(selected));
+  const persistSelection = (ids) => {
+    localStorage.setItem(storageKey, JSON.stringify(ids));
+  };
+
+  const loadSelection = () => {
+    const stored = localStorage.getItem(storageKey);
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length) {
+          applySelection(parsed);
+          return;
+        }
+      } catch {
+        // ignore invalid data
+      }
+    }
+    const defaults = fallbackIds();
+    if (defaults.length) {
+      applySelection(defaults);
+      persistSelection(defaults);
+    }
   };
 
   chips.forEach((chip) => {
     chip.addEventListener("click", () => {
       chip.classList.toggle("selected");
-      persistSelection();
+      const selectedIds = Array.from(chips)
+        .filter((c) => c.classList.contains("selected"))
+        .map(getId);
+      if (!selectedIds.length) {
+        const defaults = fallbackIds();
+        applySelection(defaults);
+        persistSelection(defaults);
+      } else {
+        persistSelection(selectedIds);
+      }
     });
   });
 
-  if (!localStorage.getItem(storageKey)) {
-    persistSelection();
-  } else {
-    applyStoredSelection();
-  }
+  loadSelection();
 }
 
 function initRiskSegments() {
@@ -212,37 +257,47 @@ function initRiskSegments() {
   if (!segments.length) return;
   const storageKey = "selectedRisk";
 
-  const getId = (segment) => segment.dataset.riskId || segment.textContent.trim();
+  const normalize = (value) => (value || "").trim().toLowerCase();
+  const getId = (segment) => normalize(segment.dataset.riskId || segment.textContent.trim());
+  const defaultSegment =
+    Array.from(segments).find((seg) => seg.hasAttribute("data-risk-default")) || segments[0];
 
-  const applyStoredSelection = () => {
-    const stored = localStorage.getItem(storageKey);
-    if (!stored) return;
+  const applySelection = (id) => {
+    const normalizedId = normalize(id);
     segments.forEach((segment) => {
-      const isActive = getId(segment) === stored;
+      const segId = getId(segment);
+      const label = normalize(segment.textContent);
+      const isActive = segId === normalizedId || label === normalizedId;
       segment.classList.toggle("selected", isActive);
     });
   };
 
-  const persistSelection = (segment) => {
-    localStorage.setItem(storageKey, getId(segment));
+  const persistSelection = (id) => {
+    if (id) {
+      localStorage.setItem(storageKey, id);
+    }
+  };
+
+  const loadSelection = () => {
+    const stored = localStorage.getItem(storageKey);
+    if (stored) {
+      applySelection(stored);
+    } else if (defaultSegment) {
+      const id = getId(defaultSegment);
+      applySelection(id);
+      persistSelection(id);
+    }
   };
 
   segments.forEach((segment) => {
     segment.addEventListener("click", () => {
-      segments.forEach((s) => s.classList.remove("selected"));
-      segment.classList.add("selected");
-      persistSelection(segment);
+      const id = getId(segment);
+      applySelection(id);
+      persistSelection(id);
     });
   });
 
-  if (!localStorage.getItem(storageKey)) {
-    const defaultSegment = Array.from(segments).find((seg) => seg.classList.contains("selected")) || segments[0];
-    if (defaultSegment) {
-      persistSelection(defaultSegment);
-    }
-  } else {
-    applyStoredSelection();
-  }
+  loadSelection();
 }
 
 function initConnectDemo() {
@@ -366,7 +421,10 @@ function initAccountForm() {
 
   fields.forEach((field) => {
     field.addEventListener("input", updateButtonState);
+    field.addEventListener("change", updateButtonState);
   });
+
+  window.addEventListener("pageshow", updateButtonState);
 
   continueBtn.addEventListener("click", (event) => {
     if (continueBtn.classList.contains("is-disabled")) {
@@ -392,7 +450,10 @@ function initAddressForm() {
 
   fields.forEach((field) => {
     field.addEventListener("input", updateButtonState);
+    field.addEventListener("change", updateButtonState);
   });
+
+  window.addEventListener("pageshow", updateButtonState);
 
   continueBtn.addEventListener("click", (event) => {
     if (continueBtn.classList.contains("is-disabled")) {
