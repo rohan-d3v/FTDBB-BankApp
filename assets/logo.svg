@@ -1,0 +1,7 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Neura Bank Logo</title>
+  <desc id="desc">Stylized N and B inside a rounded square</desc>
+  <rect x="12" y="12" width="176" height="176" rx="32" fill="none" stroke="#e9fbf3" stroke-width="8"/>
+  <path d="M60 140V60l80 80V60" fill="none" stroke="#e9fbf3" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M60 100h40c24 0 40-16 40-40" fill="none" stroke="#3dd598" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
