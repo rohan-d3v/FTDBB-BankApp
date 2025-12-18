@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>International Summary - Neura Bank</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <div class="phone">
+      <div class="island" aria-hidden="true"></div>
+      <div class="status-bar">
+        <span class="time" data-role="status-time">9:41</span>
+        <div class="status-icons" aria-hidden="true">
+          <span class="icon-signal" title="Signal">
+            <span></span><span></span><span></span><span></span>
+          </span>
+          <span class="icon-wifi" title="Wi-Fi">
+            <svg viewBox="0 0 24 24" width="20" height="20" role="presentation">
+              <path d="M2 9c5.5-5.5 14.5-5.5 20 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M6 13c3.5-3.5 8.5-3.5 12 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M10 17c1.5-1.5 4-1.5 5.5 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="12" cy="19.5" r="1.3" fill="currentColor"/>
+            </svg>
+          </span>
+          <span class="icon-battery" title="Battery">
+            <span class="battery-body"><span class="battery-level"></span></span>
+            <span class="battery-cap"></span>
+          </span>
+        </div>
+      </div>
+
+      <div class="screen has-bottom-nav">
+        <header class="header brand-header">
+          <button class="back-btn" aria-label="Go back" data-back>‹</button>
+          <div class="title-stack">
+            <div class="brand-name">Best route found</div>
+            <div class="muted">AI-optimised international transfer</div>
+          </div>
+        </header>
+
+        <section class="card summary-card" data-intl-summary>
+          <div class="summary-line">
+            <span class="muted">You send</span>
+            <span class="summary-value" data-intl-send>£250.00</span>
+          </div>
+          <div class="summary-line">
+            <span class="muted">Recipient gets</span>
+            <span class="summary-value" data-intl-receive>$312.40</span>
+          </div>
+          <div class="summary-grid">
+            <div>
+              <div class="muted">Estimated arrival</div>
+              <div class="summary-label" data-intl-arrival>Today (2 hours)</div>
+            </div>
+            <div>
+              <div class="muted">Total fee</div>
+              <div class="summary-label" data-intl-fee>£2.15</div>
+            </div>
+            <div>
+              <div class="muted">Effective FX rate</div>
+              <div class="summary-label" data-intl-rate>1.252</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card route-stack">
+          <div class="route-card recommended" data-route-option data-route-id="a">
+            <div class="route-top">
+              <div>
+                <div class="section-title">Recommended · Route A</div>
+                <div class="muted">Local rails + FX partner</div>
+              </div>
+              <span class="pill pill-outline good">Best</span>
+            </div>
+            <div class="route-meta">
+              <span data-route-a-fee>Fee: £2.15</span>
+              <span data-route-a-rate>Rate: 1.252</span>
+              <span data-route-a-arrival>Arrival: Today (2 hours)</span>
+            </div>
+            <p class="muted" data-route-a-note>Best overall cost</p>
+          </div>
+
+          <div class="route-card" data-route-option data-route-id="b">
+            <div class="route-top">
+              <div>
+                <div class="section-title">Route B</div>
+                <div class="muted">Fast card payout</div>
+              </div>
+              <span class="pill pill-muted">Fastest</span>
+            </div>
+            <div class="route-meta">
+              <span data-route-b-fee>Fee: £3.60</span>
+              <span data-route-b-rate>Rate: 1.245</span>
+              <span data-route-b-arrival>Arrival: Instant (30 mins)</span>
+            </div>
+            <p class="muted" data-route-b-note>Higher fee but instant</p>
+          </div>
+
+          <div class="route-card warning" data-route-option data-route-id="c">
+            <div class="route-top">
+              <div>
+                <div class="section-title">Route C</div>
+                <div class="muted">Traditional bank SWIFT</div>
+              </div>
+              <span class="pill pill-outline warn">Not recommended</span>
+            </div>
+            <div class="route-meta">
+              <span data-route-c-fee>Fee: £7.80</span>
+              <span data-route-c-rate>Rate: 1.232</span>
+              <span data-route-c-arrival>Arrival: 2-3 days</span>
+            </div>
+            <p class="muted" data-route-c-note>Highest fee and slowest</p>
+          </div>
+        </section>
+
+        <section class="card accordion" data-accordion>
+          <button class="accordion-toggle" type="button" data-accordion-toggle>
+            Why this route?
+            <span aria-hidden="true">›</span>
+          </button>
+          <div class="accordion-body" data-accordion-body hidden>
+            <ul class="summary-list">
+              <li>Fee comparison vs live partners</li>
+              <li>FX spread within 12 bps vs next best</li>
+              <li>Speed weighted by reliability and retries</li>
+              <li>Based on live pricing inputs (demo)</li>
+            </ul>
+          </div>
+        </section>
+
+        <div class="actions">
+          <button class="button primary" type="button" data-intl-send-now>Send now</button>
+          <button class="button secondary" type="button" data-fx-alert-open>Set FX alert</button>
+        </div>
+
+        <p class="muted footnote">Illustrative. Fees and rates may vary.</p>
+      </div>
+
+      <nav class="bottom-nav" data-bottom-nav data-nav-active="payments.html">
+        <a class="nav-item" href="dashboard.html" data-nav-target="dashboard.html">
+          <span class="nav-icon" aria-hidden="true">🏠</span>
+          <span class="nav-label">Home</span>
+        </a>
+        <a class="nav-item" href="payments.html" data-nav-target="payments.html">
+          <span class="nav-icon" aria-hidden="true">💸</span>
+          <span class="nav-label">Payments</span>
+        </a>
+        <a class="nav-item" href="insights.html" data-nav-target="insights.html">
+          <span class="nav-icon" aria-hidden="true">📈</span>
+          <span class="nav-label">Insights</span>
+        </a>
+        <a class="nav-item" href="net-worth.html" data-nav-target="net-worth.html">
+          <span class="nav-icon" aria-hidden="true">💰</span>
+          <span class="nav-label">Net Worth</span>
+        </a>
+        <a class="nav-item" href="smart-invest.html" data-nav-target="smart-invest.html">
+          <span class="nav-icon" aria-hidden="true">🤖</span>
+          <span class="nav-label">Smart Invest</span>
+        </a>
+      </nav>
+
+      <div class="modal" data-intl-success-modal hidden>
+        <div class="modal-backdrop" data-close-modal></div>
+        <div class="modal-content success-card">
+          <button class="modal-close" type="button" aria-label="Close" data-close-modal>×</button>
+          <div class="tick-circle" data-success-tick>
+            <svg viewBox="0 0 52 52" role="presentation">
+              <circle class="tick-path-bg" cx="26" cy="26" r="24" fill="none" stroke="currentColor" stroke-width="2" opacity="0.2"/>
+              <path class="tick-path" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" d="M14 27l7 7 16-16"/>
+            </svg>
+          </div>
+          <h3>Transfer scheduled</h3>
+          <p class="muted">We'll notify you once funds are handed off to the provider.</p>
+        </div>
+      </div>
+
+      <div class="modal fx-modal" data-fx-alert-modal hidden>
+        <div class="modal-backdrop" data-close-modal></div>
+        <div class="modal-content">
+          <button class="modal-close" type="button" aria-label="Close" data-close-modal>×</button>
+          <h3>Set FX alert</h3>
+          <p class="muted">Get a prompt when the rate hits your target.</p>
+          <div class="field">
+            <label for="fx-target">Target rate</label>
+            <input class="input" id="fx-target" type="number" step="0.001" min="0" data-fx-input placeholder="e.g. 1.260">
+          </div>
+          <div class="actions">
+            <button class="button primary" type="button" data-fx-save>Save alert</button>
+          </div>
+          <div class="muted" data-fx-status></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

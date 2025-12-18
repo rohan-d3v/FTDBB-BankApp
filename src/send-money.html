@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Payments - Neura Bank</title>
+  <title>Send money - Neura Bank</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -33,60 +33,29 @@
 
       <div class="screen has-bottom-nav">
         <header class="header brand-header">
-          <img class="logo-small" src="../assets/logo.svg" alt="Neura Bank logo">
+          <button class="back-btn" aria-label="Go back" data-back>‹</button>
           <div class="title-stack">
-            <div class="brand-name">Payments</div>
-            <div class="muted">Send domestically or let AI optimise FX</div>
+            <div class="brand-name">Send money</div>
+            <div class="muted">Choose where to send</div>
           </div>
-          <span class="pill pill-muted">Smart</span>
         </header>
 
         <div class="card payment-grid">
-          <a class="payment-card" href="send-money.html">
+          <a class="payment-card" href="send-domestic.html">
             <div>
-              <div class="section-title">Send money</div>
-              <p class="muted">UK to UK · instant and free</p>
+              <div class="section-title">To a UK contact</div>
+              <p class="muted">Instant Faster Payments</p>
             </div>
             <span class="chevron" aria-hidden="true">›</span>
           </a>
           <a class="payment-card accent" href="intl-start.html">
             <div>
-              <div class="section-title">International transfer</div>
-              <p class="muted">AI optimised fees + FX routing</p>
+              <div class="section-title">International (AI routing)</div>
+              <p class="muted">Find the cheapest route</p>
             </div>
             <span class="chevron" aria-hidden="true">›</span>
           </a>
         </div>
-
-        <section class="card">
-          <div class="section-heading">
-            <div class="section-title">Recent transfers</div>
-            <span class="muted">Today</span>
-          </div>
-          <div class="transfer-list">
-            <div class="transfer-row">
-              <div>
-                <div class="strong">Alex</div>
-                <div class="muted">£42.00 · Grocery split</div>
-              </div>
-              <span class="badge success">Sent</span>
-            </div>
-            <div class="transfer-row">
-              <div>
-                <div class="strong">Rent</div>
-                <div class="muted">£900.00 · Standing order</div>
-              </div>
-              <span class="badge info">Scheduled</span>
-            </div>
-            <div class="transfer-row">
-              <div>
-                <div class="strong">Utilities</div>
-                <div class="muted">£120.00 · Energy</div>
-              </div>
-              <span class="badge muted">Pending</span>
-            </div>
-          </div>
-        </section>
       </div>
 
       <nav class="bottom-nav" data-bottom-nav data-nav-active="payments.html">

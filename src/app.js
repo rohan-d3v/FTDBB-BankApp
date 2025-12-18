@@ -701,7 +701,8 @@ function initBottomNav() {
   const nav = document.querySelector("[data-bottom-nav]");
   if (!nav) return;
   const current = (window.location.pathname || "").split("/").pop() || "";
-  const normalized = current || "dashboard.html";
+  const forced = nav.dataset.navActive || "";
+  const normalized = forced || current || "dashboard.html";
   const items = nav.querySelectorAll("[data-nav-target]");
   items.forEach((item) => {
     const target = item.dataset.navTarget || "";
@@ -775,6 +776,668 @@ function initWealthRefresh() {
   });
 }
 
+function initChatbot() {
+  const form = document.querySelector("[data-chat-form]");
+  const input = document.querySelector("[data-chat-input]");
+  const log = document.querySelector("[data-chat-log]");
+  if (!form || !input || !log) return;
+
+  const quickReplies = document.querySelectorAll("[data-quick-reply]");
+
+  const scrollToBottom = () => {
+    log.scrollTo({ top: log.scrollHeight, behavior: "smooth" });
+  };
+
+  const appendMessage = (text, sender = "assistant", extras = null) => {
+    const messageEl = document.createElement("div");
+    messageEl.className = `chat-message ${sender}`;
+
+    const avatar = document.createElement("div");
+    avatar.className = "chat-avatar";
+    avatar.textContent = sender === "assistant" ? "🤖" : "👤";
+    messageEl.appendChild(avatar);
+
+    const bubble = document.createElement("div");
+    bubble.className = "chat-bubble";
+    const paragraph = document.createElement("div");
+    paragraph.textContent = text;
+    bubble.appendChild(paragraph);
+
+    if (extras && extras.bullets && extras.bullets.length) {
+      const list = document.createElement("ul");
+      list.className = "chat-list";
+      extras.bullets.forEach((tip) => {
+        const li = document.createElement("li");
+        li.textContent = tip;
+        list.appendChild(li);
+      });
+      bubble.appendChild(list);
+    }
+
+    if (extras && extras.cta) {
+      const cta = document.createElement("a");
+      cta.className = "button secondary chat-cta";
+      cta.href = extras.cta.href;
+      cta.textContent = extras.cta.label;
+      bubble.appendChild(cta);
+    }
+
+    messageEl.appendChild(bubble);
+    log.appendChild(messageEl);
+    scrollToBottom();
+  };
+
+  const buildResponse = (message) => {
+    const lower = message.toLowerCase();
+    if (lower.includes("send") || lower.includes("international") || lower.includes("abroad")) {
+      return {
+        text:
+          "I can route your transfer through the cheapest partner based on FX + fees. Want me to open the international flow?",
+        cta: { label: "Open International Transfer", href: "intl-start.html" },
+      };
+    }
+    if (lower.includes("invest")) {
+      return {
+        text:
+          "Based on your profile, I'd suggest 65% global equities, 25% bonds, 10% cash buffer. Ready to rebalance?",
+        cta: { label: "Go to Smart Invest", href: "smart-invest.html" },
+      };
+    }
+    if (lower.includes("spend") || lower.includes("subscription")) {
+      return {
+        text: "Here are quick wins to trim spend:",
+        bullets: ["Flag 2 duplicate streaming plans", "Set £200 essentials cap", "Swap to cashback card"],
+        cta: { label: "Open Insights", href: "insights.html" },
+      };
+    }
+    return {
+      text: "I can simulate bills, optimise FX, or suggest investment moves. Try asking about transfers or goals.",
+    };
+  };
+
+  const handleSend = (message) => {
+    const clean = (message || "").trim();
+    if (!clean) return;
+    appendMessage(clean, "user");
+    input.value = "";
+    setTimeout(() => {
+      const response = buildResponse(clean);
+      appendMessage(response.text, "assistant", response);
+    }, 400);
+  };
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    handleSend(input.value);
+  });
+
+  quickReplies.forEach((chip) => {
+    chip.addEventListener("click", () => {
+      const value = chip.dataset.quickReply || chip.textContent;
+      input.value = value;
+      handleSend(value);
+    });
+  });
+}
+
+function initIntlStart() {
+  const form = document.querySelector("[data-intl-form]");
+  if (!form) return;
+  const amountInput = form.querySelector("[data-intl-amount]");
+  const countrySelect = form.querySelector("[data-intl-country]");
+  const currencyOutput = form.querySelector("[data-intl-currency]");
+  const speedGroup = form.querySelector("[data-intl-speed-group]");
+  const noteInput = form.querySelector("[data-intl-note]");
+  const errorEl = form.querySelector("[data-intl-error]");
+  const submitBtn = form.querySelector("[data-intl-submit]");
+
+  const currencyMap = {
+    US: "USD",
+    EU: "EUR",
+    India: "INR",
+    UAE: "AED",
+  };
+
+  const selectSpeed = (speed) => {
+    const buttons = speedGroup ? speedGroup.querySelectorAll("[data-intl-speed]") : [];
+    buttons.forEach((btn) => {
+      const isSelected = btn.dataset.intlSpeed === speed;
+      btn.classList.toggle("selected", isSelected);
+      btn.setAttribute("aria-pressed", String(isSelected));
+    });
+    localStorage.setItem("intl_speed", speed);
+  };
+
+  const loadInitial = () => {
+    const storedAmount = localStorage.getItem("intl_amount_gbp") || "250";
+    const storedCountry = localStorage.getItem("intl_country") || "US";
+    const storedSpeed = localStorage.getItem("intl_speed") || "balanced";
+    amountInput.value = storedAmount;
+    countrySelect.value = storedCountry;
+    currencyOutput.value = currencyMap[storedCountry] || "USD";
+    selectSpeed(storedSpeed);
+  };
+
+  const updateCurrency = () => {
+    const val = countrySelect.value;
+    currencyOutput.value = currencyMap[val] || "USD";
+  };
+
+  countrySelect.addEventListener("change", () => {
+    updateCurrency();
+    localStorage.setItem("intl_country", countrySelect.value);
+  });
+
+  if (speedGroup) {
+    speedGroup.querySelectorAll("[data-intl-speed]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        selectSpeed(btn.dataset.intlSpeed || "balanced");
+      });
+    });
+  }
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const amount = parseFloat(amountInput.value || "0");
+    if (!amount || amount <= 0) {
+      if (errorEl) errorEl.hidden = false;
+      return;
+    }
+    if (errorEl) errorEl.hidden = true;
+    localStorage.setItem("intl_amount_gbp", amountInput.value);
+    localStorage.setItem("intl_country", countrySelect.value);
+    const selectedSpeed = speedGroup
+      ? (speedGroup.querySelector(".selected") && speedGroup.querySelector(".selected").dataset.intlSpeed) || "balanced"
+      : "balanced";
+    localStorage.setItem("intl_speed", selectedSpeed);
+    if (noteInput) localStorage.setItem("intl_note", noteInput.value || "");
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Finding route…";
+    }
+    setTimeout(() => {
+      window.location.href = "intl-summary.html";
+    }, 400);
+  });
+
+  loadInitial();
+}
+
+function initAccordion() {
+  const accordion = document.querySelector("[data-accordion]");
+  if (!accordion) return;
+  const toggle = accordion.querySelector("[data-accordion-toggle]");
+  const body = accordion.querySelector("[data-accordion-body]");
+  if (!toggle || !body) return;
+  toggle.addEventListener("click", () => {
+    const isHidden = body.hasAttribute("hidden");
+    body.hidden = !isHidden;
+    toggle.querySelector("span").textContent = isHidden ? "⌃" : "›";
+  });
+}
+
+function initFxAlertModal() {
+  const modal = document.querySelector("[data-fx-alert-modal]");
+  if (!modal) return;
+  const openBtn = document.querySelector("[data-fx-alert-open]");
+  const saveBtn = modal.querySelector("[data-fx-save]");
+  const statusEl = modal.querySelector("[data-fx-status]");
+  const input = modal.querySelector("[data-fx-input]");
+  const closers = modal.querySelectorAll("[data-close-modal]");
+
+  const closeModal = () => {
+    modal.setAttribute("hidden", "true");
+  };
+
+  const openModal = () => {
+    modal.removeAttribute("hidden");
+    if (statusEl) statusEl.textContent = "";
+  };
+
+  if (openBtn) {
+    openBtn.addEventListener("click", () => {
+      openModal();
+    });
+  }
+
+  closers.forEach((btn) => {
+    btn.addEventListener("click", closeModal);
+  });
+
+  modal.addEventListener("click", (event) => {
+    if (event.target && event.target.hasAttribute && event.target.hasAttribute("data-close-modal")) {
+      closeModal();
+    }
+  });
+
+  if (saveBtn) {
+    saveBtn.addEventListener("click", () => {
+      const rate = input ? input.value.trim() : "";
+      localStorage.setItem("fx_alert_rate", rate);
+      if (statusEl) statusEl.textContent = rate ? `Alert saved for ${rate}` : "Alert saved";
+      setTimeout(closeModal, 500);
+    });
+  }
+}
+
+function initIntlSummary() {
+  const summary = document.querySelector("[data-intl-summary]");
+  if (!summary) return;
+  const sendEl = summary.querySelector("[data-intl-send]");
+  const receiveEl = summary.querySelector("[data-intl-receive]");
+  const arrivalEl = summary.querySelector("[data-intl-arrival]");
+  const feeEl = summary.querySelector("[data-intl-fee]");
+  const rateEl = summary.querySelector("[data-intl-rate]");
+  const sendNowBtn = document.querySelector("[data-intl-send-now]");
+  const successModal = document.querySelector("[data-intl-success-modal]");
+  const successTick = successModal ? successModal.querySelector("[data-success-tick]") : null;
+  const closers = successModal ? successModal.querySelectorAll("[data-close-modal]") : [];
+  const routeCards = document.querySelectorAll("[data-route-option]");
+  const speed = localStorage.getItem("intl_speed") || "balanced";
+  const amount = parseFloat(localStorage.getItem("intl_amount_gbp") || "250");
+  const country = localStorage.getItem("intl_country") || "US";
+  const currencyMap = { US: "USD", EU: "EUR", India: "INR", UAE: "AED" };
+  const currency = currencyMap[country] || "USD";
+
+  const computeRoute = (mode) => {
+    if (mode === "cheapest") {
+      return { fee: 1.6, rate: 1.248, arrival: "Tomorrow (by 10am)", noteA: "Lowest cost, slower" };
+    }
+    if (mode === "fastest") {
+      return { fee: 3.6, rate: 1.245, arrival: "Instant (30 mins)", noteA: "Fastest path via card rails" };
+    }
+    return { fee: 2.15, rate: 1.252, arrival: "Today (2 hours)", noteA: "Balanced cost vs speed" };
+  };
+
+  const applySummary = () => {
+    const { fee, rate, arrival, noteA } = computeRoute(speed);
+    const received = ((amount - fee) * rate).toFixed(2);
+    if (sendEl) sendEl.textContent = `£${amount.toFixed(2)}`;
+    if (receiveEl) receiveEl.textContent = `${currencySymbol()}${received}`;
+    if (arrivalEl) arrivalEl.textContent = arrival;
+    if (feeEl) feeEl.textContent = `£${fee.toFixed(2)}`;
+    if (rateEl) rateEl.textContent = rate.toFixed(3);
+
+    const setText = (selector, text) => {
+      const el = document.querySelector(selector);
+      if (el) el.textContent = text;
+    };
+
+    setText("[data-route-a-fee]", `Fee: £${fee.toFixed(2)}`);
+    setText("[data-route-a-rate]", `Rate: ${rate.toFixed(3)}`);
+    setText("[data-route-a-arrival]", `Arrival: ${arrival}`);
+    setText("[data-route-a-note]", noteA || "Best overall cost");
+
+    setText("[data-route-b-fee]", "Fee: £3.60");
+    setText("[data-route-b-rate]", "Rate: 1.245");
+    setText("[data-route-b-arrival]", "Arrival: Instant (30 mins)");
+    setText("[data-route-b-note]", "Higher fee but instant");
+
+    setText("[data-route-c-fee]", "Fee: £7.80");
+    setText("[data-route-c-rate]", "Rate: 1.232");
+    setText("[data-route-c-arrival]", "Arrival: 2-3 days");
+    setText("[data-route-c-note]", "Highest fee and slowest");
+  };
+
+  const currencySymbol = () => {
+    if (currency === "USD") return "$";
+    if (currency === "EUR") return "€";
+    if (currency === "INR") return "₹";
+    if (currency === "AED") return "د.إ";
+    return "$";
+  };
+
+  routeCards.forEach((card) => {
+    card.addEventListener("click", () => {
+      routeCards.forEach((c) => c.classList.remove("recommended"));
+      card.classList.add("recommended");
+    });
+  });
+
+  const closeSuccess = () => {
+    if (successModal) successModal.setAttribute("hidden", "true");
+  };
+
+  const openSuccess = () => {
+    if (successModal) {
+      successModal.removeAttribute("hidden");
+      if (successTick) {
+        setTimeout(() => successTick.classList.add("animate"), 40);
+      }
+    }
+  };
+
+  closers.forEach((btn) => {
+    btn.addEventListener("click", closeSuccess);
+  });
+
+  if (successModal) {
+    successModal.addEventListener("click", (event) => {
+      if (event.target && event.target.hasAttribute && event.target.hasAttribute("data-close-modal")) {
+        closeSuccess();
+      }
+    });
+  }
+
+  if (sendNowBtn) {
+    sendNowBtn.addEventListener("click", () => {
+      openSuccess();
+      setTimeout(() => {
+        window.location.href = "payments.html";
+      }, 900);
+    });
+  }
+
+  applySummary();
+}
+
+function initSendDomestic() {
+  const recipients = document.querySelectorAll("[data-recipient]");
+  const amountInput = document.querySelector("[data-pay-amount]");
+  const noteInput = document.querySelector("[data-pay-note]");
+  const quickBtns = document.querySelectorAll("[data-pay-add]");
+  const continueBtn = document.querySelector("[data-pay-continue]");
+  const errorEl = document.querySelector("[data-pay-error]");
+  if (!recipients.length || !amountInput || !continueBtn) return;
+
+  const setRecipient = (name) => {
+    recipients.forEach((btn) => {
+      const isSelected = btn.dataset.recipient === name;
+      btn.classList.toggle("selected", isSelected);
+      btn.setAttribute("aria-pressed", String(isSelected));
+    });
+    localStorage.setItem("pay_recipient", name);
+  };
+
+  const selectedOrFirst = () => {
+    const selected = Array.from(recipients).find((btn) => btn.classList.contains("selected"));
+    return selected ? selected.dataset.recipient : recipients[0].dataset.recipient;
+  };
+
+  recipients.forEach((btn) => {
+    btn.addEventListener("click", () => setRecipient(btn.dataset.recipient));
+  });
+
+  quickBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const increment = parseFloat(btn.dataset.payAdd || "0") || 0;
+      const current = parseFloat(amountInput.value || "0") || 0;
+      const total = (current + increment).toFixed(2);
+      amountInput.value = total;
+    });
+  });
+
+  if (continueBtn) {
+    continueBtn.addEventListener("click", () => {
+      const amount = parseFloat(amountInput.value || "0");
+      if (!amount || amount <= 0) {
+        if (errorEl) errorEl.hidden = false;
+        return;
+      }
+      if (errorEl) errorEl.hidden = true;
+      const recipient = selectedOrFirst();
+      setRecipient(recipient);
+      localStorage.setItem("pay_amount", amount.toFixed(2));
+      if (noteInput) localStorage.setItem("pay_note", noteInput.value || "");
+      window.location.href = "send-confirm.html";
+    });
+  }
+
+  const load = () => {
+    const storedRecipient = localStorage.getItem("pay_recipient");
+    const storedAmount = localStorage.getItem("pay_amount");
+    const storedNote = localStorage.getItem("pay_note");
+    if (storedRecipient) setRecipient(storedRecipient);
+    else setRecipient(recipients[0].dataset.recipient);
+    if (storedAmount) amountInput.value = storedAmount;
+    if (storedNote && noteInput) noteInput.value = storedNote;
+  };
+
+  load();
+}
+
+function initSendConfirm() {
+  const summary = document.querySelector("[data-pay-summary]");
+  if (!summary) return;
+  const recipientEl = summary.querySelector("[data-pay-recipient]");
+  const amountEl = summary.querySelector("[data-pay-amount]");
+  const noteEl = summary.querySelector("[data-pay-note]");
+  const sendBtn = document.querySelector("[data-pay-send-now]");
+  const modal = document.querySelector("[data-pay-success-modal]");
+  const tick = modal ? modal.querySelector("[data-success-tick]") : null;
+
+  const recipient = localStorage.getItem("pay_recipient") || "Recipient";
+  const amount = parseFloat(localStorage.getItem("pay_amount") || "0").toFixed(2);
+  const note = localStorage.getItem("pay_note") || "—";
+  if (recipientEl) recipientEl.textContent = recipient;
+  if (amountEl) amountEl.textContent = `£${amount}`;
+  if (noteEl) noteEl.textContent = note || "—";
+
+  const closeModal = () => {
+    if (modal) modal.setAttribute("hidden", "true");
+  };
+
+  const openModal = () => {
+    if (!modal) return;
+    modal.removeAttribute("hidden");
+    if (tick) {
+      tick.classList.remove("animate");
+      setTimeout(() => tick.classList.add("animate"), 20);
+    }
+  };
+
+  if (modal) {
+    modal.addEventListener("click", (event) => {
+      if (event.target && event.target.hasAttribute && event.target.hasAttribute("data-close-modal")) {
+        closeModal();
+      }
+    });
+  }
+
+  if (sendBtn) {
+    sendBtn.addEventListener("click", () => {
+      openModal();
+      setTimeout(() => {
+        window.location.href = "send-success.html";
+      }, 900);
+    });
+  }
+}
+
+function initSendSuccess() {
+  const summary = document.querySelector("[data-pay-success]");
+  if (!summary) return;
+  const recipientEl = summary.querySelector("[data-pay-recipient]");
+  const amountEl = summary.querySelector("[data-pay-amount]");
+  const noteEl = summary.querySelector("[data-pay-note]");
+
+  const recipient = localStorage.getItem("pay_recipient") || "Recipient";
+  const amount = parseFloat(localStorage.getItem("pay_amount") || "0").toFixed(2);
+  const note = localStorage.getItem("pay_note") || "—";
+
+  if (recipientEl) recipientEl.textContent = recipient;
+  if (amountEl) amountEl.textContent = `£${amount}`;
+  if (noteEl) noteEl.textContent = note || "—";
+
+  ["pay_recipient", "pay_amount", "pay_note"].forEach((key) => localStorage.removeItem(key));
+}
+
+function initInvestQuiz() {
+  const quiz = document.querySelector("[data-invest-quiz]");
+  if (!quiz) return;
+  const goalGroup = quiz.querySelector("[data-invest-goal]");
+  const horizonGroup = quiz.querySelector("[data-invest-horizon]");
+  const riskGroup = quiz.querySelector("[data-invest-risk]");
+  const monthlyInput = quiz.querySelector("[data-invest-monthly]");
+  const generateBtn = quiz.querySelector("[data-invest-generate]");
+
+  const toggleGroup = (group, value, attr) => {
+    if (!group) return;
+    group.querySelectorAll(`[${attr}]`).forEach((btn) => {
+      const isSelected = btn.getAttribute(attr) === value;
+      btn.classList.toggle("selected", isSelected);
+      btn.setAttribute("aria-pressed", String(isSelected));
+    });
+  };
+
+  const setGoal = (goal) => {
+    toggleGroup(goalGroup, goal, "data-goal");
+    localStorage.setItem("invest_goal", goal);
+  };
+  const setHorizon = (horizon) => {
+    toggleGroup(horizonGroup, horizon, "data-horizon");
+    localStorage.setItem("invest_horizon", horizon);
+  };
+  const setRisk = (risk) => {
+    toggleGroup(riskGroup, risk, "data-risk");
+    localStorage.setItem("invest_risk", risk);
+  };
+
+  if (goalGroup) {
+    goalGroup.querySelectorAll("[data-goal]").forEach((btn) => {
+      btn.addEventListener("click", () => setGoal(btn.dataset.goal));
+    });
+  }
+
+  if (horizonGroup) {
+    horizonGroup.querySelectorAll("[data-horizon]").forEach((btn) => {
+      btn.addEventListener("click", () => setHorizon(btn.dataset.horizon));
+    });
+  }
+
+  if (riskGroup) {
+    riskGroup.querySelectorAll("[data-risk]").forEach((btn) => {
+      btn.addEventListener("click", () => setRisk(btn.dataset.risk));
+    });
+  }
+
+  if (generateBtn) {
+    generateBtn.addEventListener("click", () => {
+      const monthly = monthlyInput ? monthlyInput.value || "100" : "100";
+      localStorage.setItem("invest_monthly", monthly);
+      window.location.href = "invest-plan.html";
+    });
+  }
+
+  const load = () => {
+    const goal = localStorage.getItem("invest_goal") || "balanced";
+    const horizon = localStorage.getItem("invest_horizon") || "3-7";
+    const risk = localStorage.getItem("invest_risk") || "balanced";
+    const monthly = localStorage.getItem("invest_monthly") || "100";
+    setGoal(goal);
+    setHorizon(horizon);
+    setRisk(risk);
+    if (monthlyInput) monthlyInput.value = monthly;
+  };
+
+  load();
+}
+
+function initInvestPlan() {
+  const plan = document.querySelector("[data-invest-plan]");
+  if (!plan) return;
+  const equityBar = plan.querySelector("[data-alloc-equity]");
+  const bondsBar = plan.querySelector("[data-alloc-bonds]");
+  const cashBar = plan.querySelector("[data-alloc-cash]");
+  const riskLabel = plan.querySelector("[data-invest-risk-label]");
+  const goalLabel = plan.querySelector("[data-invest-goal-label]");
+
+  const projectionCard = document.querySelector("[data-invest-projection]");
+  const returnLabel = projectionCard ? projectionCard.querySelector("[data-invest-return]") : null;
+  const projectedValue = projectionCard ? projectionCard.querySelector("[data-invest-projected]") : null;
+
+  const risk = localStorage.getItem("invest_risk") || "balanced";
+  const goal = localStorage.getItem("invest_goal") || "balanced";
+  const monthly = parseFloat(localStorage.getItem("invest_monthly") || "100");
+
+  const riskConfig = {
+    cautious: { equity: 30, bonds: 50, cash: 20, return: 0.04, label: "Cautious" },
+    balanced: { equity: 60, bonds: 30, cash: 10, return: 0.06, label: "Balanced" },
+    growth: { equity: 85, bonds: 10, cash: 5, return: 0.08, label: "Growth" },
+  };
+  const config = riskConfig[risk] || riskConfig.balanced;
+
+  const setBar = (bar, percent, name) => {
+    if (!bar) return;
+    bar.style.width = `${percent}%`;
+    bar.innerHTML = `<span>${name} ${percent}%</span>`;
+  };
+
+  setBar(equityBar, config.equity, "Equity");
+  setBar(bondsBar, config.bonds, "Bonds");
+  setBar(cashBar, config.cash, "Cash");
+
+  const goalLabelMap = {
+    growth: "Long-term growth",
+    balanced: "Balanced",
+    preserve: "Preserve capital",
+  };
+
+  if (riskLabel) riskLabel.textContent = config.label;
+  if (goalLabel) goalLabel.textContent = `Goal: ${goalLabelMap[goal] || "Balanced"}`;
+  if (returnLabel) returnLabel.textContent = `${Math.round(config.return * 100)}% expected`;
+
+  const monthlyRate = Math.pow(1 + config.return, 1 / 12) - 1;
+  const months = 10 * 12;
+  const futureValue =
+    monthlyRate > 0 ? monthly * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate) : monthly * months;
+  if (projectedValue) projectedValue.textContent = `£${futureValue.toFixed(0)}`;
+}
+
+function initInvestConfirm() {
+  const summary = document.querySelector("[data-invest-summary]");
+  if (!summary) return;
+  const monthlyEl = summary.querySelector("[data-invest-monthly]");
+  const riskEl = summary.querySelector("[data-invest-risk]");
+  const allocationEl = summary.querySelector("[data-invest-allocation]");
+  const startBtn = document.querySelector("[data-invest-start]");
+  const modal = document.querySelector("[data-invest-success-modal]");
+  const tick = modal ? modal.querySelector("[data-success-tick]") : null;
+
+  const risk = localStorage.getItem("invest_risk") || "balanced";
+  const monthly = parseFloat(localStorage.getItem("invest_monthly") || "100");
+  const config = {
+    cautious: { equity: 30, bonds: 50, cash: 20, label: "Cautious" },
+    balanced: { equity: 60, bonds: 30, cash: 10, label: "Balanced" },
+    growth: { equity: 85, bonds: 10, cash: 5, label: "Growth" },
+  }[risk] || { equity: 60, bonds: 30, cash: 10, label: "Balanced" };
+
+  if (monthlyEl) monthlyEl.textContent = `£${monthly.toFixed(0)}/mo`;
+  if (riskEl) riskEl.textContent = config.label;
+  if (allocationEl)
+    allocationEl.textContent = `${config.equity}% equity / ${config.bonds}% bonds / ${config.cash}% cash`;
+
+  const closeModal = () => {
+    if (modal) modal.setAttribute("hidden", "true");
+  };
+
+  const openModal = () => {
+    if (!modal) return;
+    modal.removeAttribute("hidden");
+    if (tick) {
+      tick.classList.remove("animate");
+      setTimeout(() => tick.classList.add("animate"), 20);
+    }
+  };
+
+  if (modal) {
+    modal.addEventListener("click", (event) => {
+      if (event.target && event.target.hasAttribute && event.target.hasAttribute("data-close-modal")) {
+        closeModal();
+      }
+    });
+  }
+
+  if (startBtn) {
+    startBtn.addEventListener("click", () => {
+      openModal();
+      setTimeout(() => {
+        window.location.href = "invest-success.html";
+      }, 900);
+    });
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   updateStatusTime();
   setInterval(updateStatusTime, 30_000);
@@ -793,4 +1456,15 @@ document.addEventListener("DOMContentLoaded", () => {
   initBottomNav();
   initSpendAnalyserModal();
   initWealthRefresh();
+  initChatbot();
+  initIntlStart();
+  initIntlSummary();
+  initAccordion();
+  initFxAlertModal();
+  initSendDomestic();
+  initSendConfirm();
+  initSendSuccess();
+  initInvestQuiz();
+  initInvestPlan();
+  initInvestConfirm();
 });

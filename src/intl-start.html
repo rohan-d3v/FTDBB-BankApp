@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Payments - Neura Bank</title>
+  <title>International Transfer - Neura Bank</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -33,60 +33,61 @@
 
       <div class="screen has-bottom-nav">
         <header class="header brand-header">
-          <img class="logo-small" src="../assets/logo.svg" alt="Neura Bank logo">
+          <button class="back-btn" aria-label="Go back" data-back>‹</button>
           <div class="title-stack">
-            <div class="brand-name">Payments</div>
-            <div class="muted">Send domestically or let AI optimise FX</div>
+            <div class="brand-name">International Transfer</div>
+            <div class="muted">AI chooses the cheapest/best route</div>
           </div>
-          <span class="pill pill-muted">Smart</span>
         </header>
 
-        <div class="card payment-grid">
-          <a class="payment-card" href="send-money.html">
-            <div>
-              <div class="section-title">Send money</div>
-              <p class="muted">UK to UK · instant and free</p>
-            </div>
-            <span class="chevron" aria-hidden="true">›</span>
-          </a>
-          <a class="payment-card accent" href="intl-start.html">
-            <div>
-              <div class="section-title">International transfer</div>
-              <p class="muted">AI optimised fees + FX routing</p>
-            </div>
-            <span class="chevron" aria-hidden="true">›</span>
-          </a>
-        </div>
-
-        <section class="card">
-          <div class="section-heading">
-            <div class="section-title">Recent transfers</div>
-            <span class="muted">Today</span>
-          </div>
-          <div class="transfer-list">
-            <div class="transfer-row">
-              <div>
-                <div class="strong">Alex</div>
-                <div class="muted">£42.00 · Grocery split</div>
-              </div>
-              <span class="badge success">Sent</span>
-            </div>
-            <div class="transfer-row">
-              <div>
-                <div class="strong">Rent</div>
-                <div class="muted">£900.00 · Standing order</div>
-              </div>
-              <span class="badge info">Scheduled</span>
-            </div>
-            <div class="transfer-row">
-              <div>
-                <div class="strong">Utilities</div>
-                <div class="muted">£120.00 · Energy</div>
-              </div>
-              <span class="badge muted">Pending</span>
-            </div>
-          </div>
+        <section class="card info-card strong">
+          <div class="section-title">Smart routing</div>
+          <p class="muted">Neura automatically compares bank transfers, Wise-like partners, and card rails to minimise fees and maximise speed.</p>
         </section>
+
+        <form class="card form-card" data-intl-form>
+          <div class="field">
+            <label for="amount">Send amount (GBP)</label>
+            <input class="input" id="amount" type="number" min="1" step="0.01" value="250" data-intl-amount>
+            <div class="input-error" data-intl-error hidden>Enter an amount greater than zero.</div>
+          </div>
+
+          <div class="field">
+            <label for="country">Recipient country</label>
+            <select class="input" id="country" data-intl-country>
+              <option value="US">United States</option>
+              <option value="EU">European Union</option>
+              <option value="India">India</option>
+              <option value="UAE">United Arab Emirates</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Recipient receives</label>
+            <input class="input is-locked" type="text" data-intl-currency readonly value="USD">
+          </div>
+
+          <div class="field">
+            <label>Delivery speed</label>
+            <div class="segmented" data-intl-speed-group>
+              <button class="segment" type="button" data-intl-speed="cheapest">Cheapest</button>
+              <button class="segment" type="button" data-intl-speed="balanced">Balanced</button>
+              <button class="segment" type="button" data-intl-speed="fastest">Fastest</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="note">Note (optional)</label>
+            <input class="input" id="note" type="text" placeholder="e.g. Rent for Sarah" data-intl-note>
+          </div>
+
+          <div class="actions">
+            <button class="button primary" type="submit" data-intl-submit>Find best route</button>
+            <button class="button ghost" type="button" data-back>Back</button>
+          </div>
+        </form>
+
+        <p class="muted footnote">We'll pre-fill your summary and show you the best route - no data is sent to providers in this demo.</p>
       </div>
 
       <nav class="bottom-nav" data-bottom-nav data-nav-active="payments.html">

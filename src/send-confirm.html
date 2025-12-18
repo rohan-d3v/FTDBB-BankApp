@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Payments - Neura Bank</title>
+  <title>Confirm payment - Neura Bank</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -33,60 +33,42 @@
 
       <div class="screen has-bottom-nav">
         <header class="header brand-header">
-          <img class="logo-small" src="../assets/logo.svg" alt="Neura Bank logo">
+          <button class="back-btn" aria-label="Go back" data-back>‹</button>
           <div class="title-stack">
-            <div class="brand-name">Payments</div>
-            <div class="muted">Send domestically or let AI optimise FX</div>
+            <div class="brand-name">Confirm payment</div>
+            <div class="muted">Instant · Fee £0.00</div>
           </div>
-          <span class="pill pill-muted">Smart</span>
         </header>
 
-        <div class="card payment-grid">
-          <a class="payment-card" href="send-money.html">
-            <div>
-              <div class="section-title">Send money</div>
-              <p class="muted">UK to UK · instant and free</p>
-            </div>
-            <span class="chevron" aria-hidden="true">›</span>
-          </a>
-          <a class="payment-card accent" href="intl-start.html">
-            <div>
-              <div class="section-title">International transfer</div>
-              <p class="muted">AI optimised fees + FX routing</p>
-            </div>
-            <span class="chevron" aria-hidden="true">›</span>
-          </a>
-        </div>
-
-        <section class="card">
-          <div class="section-heading">
-            <div class="section-title">Recent transfers</div>
-            <span class="muted">Today</span>
+        <section class="card summary-card" data-pay-summary>
+          <div class="summary-line">
+            <span class="muted">Recipient</span>
+            <span class="summary-value" data-pay-recipient>—</span>
           </div>
-          <div class="transfer-list">
-            <div class="transfer-row">
-              <div>
-                <div class="strong">Alex</div>
-                <div class="muted">£42.00 · Grocery split</div>
-              </div>
-              <span class="badge success">Sent</span>
+          <div class="summary-line">
+            <span class="muted">Amount</span>
+            <span class="summary-value" data-pay-amount>£0.00</span>
+          </div>
+          <div class="summary-grid">
+            <div>
+              <div class="muted">Fee</div>
+              <div class="summary-label">£0.00</div>
             </div>
-            <div class="transfer-row">
-              <div>
-                <div class="strong">Rent</div>
-                <div class="muted">£900.00 · Standing order</div>
-              </div>
-              <span class="badge info">Scheduled</span>
+            <div>
+              <div class="muted">Delivery</div>
+              <div class="summary-label">Instant</div>
             </div>
-            <div class="transfer-row">
-              <div>
-                <div class="strong">Utilities</div>
-                <div class="muted">£120.00 · Energy</div>
-              </div>
-              <span class="badge muted">Pending</span>
+            <div>
+              <div class="muted">Reference</div>
+              <div class="summary-label" data-pay-note>—</div>
             </div>
           </div>
         </section>
+
+        <div class="actions">
+          <button class="button primary" type="button" data-pay-send-now>Send now</button>
+          <a class="button secondary" href="send-domestic.html">Edit</a>
+        </div>
       </div>
 
       <nav class="bottom-nav" data-bottom-nav data-nav-active="payments.html">
@@ -111,6 +93,20 @@
           <span class="nav-label">Smart Invest</span>
         </a>
       </nav>
+
+      <div class="modal" data-pay-success-modal hidden>
+        <div class="modal-backdrop" data-close-modal></div>
+        <div class="modal-content success-card">
+          <div class="tick-circle" data-success-tick>
+            <svg viewBox="0 0 52 52" role="presentation">
+              <circle class="tick-path-bg" cx="26" cy="26" r="24" fill="none" stroke="currentColor" stroke-width="2" opacity="0.2"/>
+              <path class="tick-path" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" d="M14 27l7 7 16-16"/>
+            </svg>
+          </div>
+          <h3>Payment sent</h3>
+          <p class="muted">We'll confirm once funds land.</p>
+        </div>
+      </div>
     </div>
   </div>
 

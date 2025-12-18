@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Payments - Neura Bank</title>
+  <title>Neura AI - Neura Bank</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -31,65 +31,53 @@
         </div>
       </div>
 
-      <div class="screen has-bottom-nav">
-        <header class="header brand-header">
-          <img class="logo-small" src="../assets/logo.svg" alt="Neura Bank logo">
+      <div class="screen has-bottom-nav chat-screen">
+        <header class="header">
+          <button class="back-btn" aria-label="Go back" data-back>‹</button>
           <div class="title-stack">
-            <div class="brand-name">Payments</div>
-            <div class="muted">Send domestically or let AI optimise FX</div>
+            <div class="brand-name">Neura AI</div>
+            <div class="muted">Ask about spending, savings, investing, and payments</div>
           </div>
-          <span class="pill pill-muted">Smart</span>
         </header>
 
-        <div class="card payment-grid">
-          <a class="payment-card" href="send-money.html">
-            <div>
-              <div class="section-title">Send money</div>
-              <p class="muted">UK to UK · instant and free</p>
+        <section class="card chat-panel">
+          <div class="chat-log" data-chat-log>
+            <div class="chat-message assistant">
+              <div class="chat-avatar" aria-hidden="true">🤖</div>
+              <div class="chat-bubble">
+                Hi Sarah - I've reviewed your accounts. Want to optimise bills, savings goals, or investing?
+              </div>
             </div>
-            <span class="chevron" aria-hidden="true">›</span>
-          </a>
-          <a class="payment-card accent" href="intl-start.html">
-            <div>
-              <div class="section-title">International transfer</div>
-              <p class="muted">AI optimised fees + FX routing</p>
+            <div class="chat-message assistant">
+              <div class="chat-avatar" aria-hidden="true">🤖</div>
+              <div class="chat-bubble">
+                Today's top opportunity: cancel 2 subscriptions to save £38/month.
+              </div>
             </div>
-            <span class="chevron" aria-hidden="true">›</span>
-          </a>
-        </div>
-
-        <section class="card">
-          <div class="section-heading">
-            <div class="section-title">Recent transfers</div>
-            <span class="muted">Today</span>
+            <div class="chat-message assistant">
+              <div class="chat-avatar" aria-hidden="true">🤖</div>
+              <div class="chat-bubble">
+                Ask me to run a simulation, compare FX routes, or rebalance your investments.
+              </div>
+            </div>
           </div>
-          <div class="transfer-list">
-            <div class="transfer-row">
-              <div>
-                <div class="strong">Alex</div>
-                <div class="muted">£42.00 · Grocery split</div>
-              </div>
-              <span class="badge success">Sent</span>
-            </div>
-            <div class="transfer-row">
-              <div>
-                <div class="strong">Rent</div>
-                <div class="muted">£900.00 · Standing order</div>
-              </div>
-              <span class="badge info">Scheduled</span>
-            </div>
-            <div class="transfer-row">
-              <div>
-                <div class="strong">Utilities</div>
-                <div class="muted">£120.00 · Energy</div>
-              </div>
-              <span class="badge muted">Pending</span>
-            </div>
+
+          <div class="chip-group quick-replies">
+            <button type="button" class="chip" data-quick-reply="Optimise subscriptions">Optimise subscriptions</button>
+            <button type="button" class="chip" data-quick-reply="How can I reach my home deposit faster?">How can I reach my home deposit faster?</button>
+            <button type="button" class="chip" data-quick-reply="Cheapest way to send money abroad?">Cheapest way to send money abroad?</button>
           </div>
         </section>
+
+        <form class="chat-input-bar" data-chat-form>
+          <input class="input chat-input" type="text" name="message" autocomplete="off" placeholder="Type a message" data-chat-input>
+          <button class="button primary chat-send" type="submit">Send</button>
+        </form>
+
+        <p class="muted footnote">Data sources: Insights powered by Open Banking connections (PSD2 AISP/PISP).</p>
       </div>
 
-      <nav class="bottom-nav" data-bottom-nav data-nav-active="payments.html">
+      <nav class="bottom-nav" data-bottom-nav>
         <a class="nav-item" href="dashboard.html" data-nav-target="dashboard.html">
           <span class="nav-icon" aria-hidden="true">🏠</span>
           <span class="nav-label">Home</span>

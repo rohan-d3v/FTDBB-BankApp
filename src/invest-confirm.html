@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Payments - Neura Bank</title>
+  <title>Confirm plan - Neura Bank</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -33,63 +33,37 @@
 
       <div class="screen has-bottom-nav">
         <header class="header brand-header">
-          <img class="logo-small" src="../assets/logo.svg" alt="Neura Bank logo">
+          <button class="back-btn" aria-label="Go back" data-back>‹</button>
           <div class="title-stack">
-            <div class="brand-name">Payments</div>
-            <div class="muted">Send domestically or let AI optimise FX</div>
+            <div class="brand-name">Confirm plan</div>
+            <div class="muted">Review before activating</div>
           </div>
-          <span class="pill pill-muted">Smart</span>
         </header>
 
-        <div class="card payment-grid">
-          <a class="payment-card" href="send-money.html">
-            <div>
-              <div class="section-title">Send money</div>
-              <p class="muted">UK to UK · instant and free</p>
-            </div>
-            <span class="chevron" aria-hidden="true">›</span>
-          </a>
-          <a class="payment-card accent" href="intl-start.html">
-            <div>
-              <div class="section-title">International transfer</div>
-              <p class="muted">AI optimised fees + FX routing</p>
-            </div>
-            <span class="chevron" aria-hidden="true">›</span>
-          </a>
-        </div>
-
-        <section class="card">
-          <div class="section-heading">
-            <div class="section-title">Recent transfers</div>
-            <span class="muted">Today</span>
+        <section class="card summary-card" data-invest-summary>
+          <div class="summary-line">
+            <span class="muted">Monthly contribution</span>
+            <span class="summary-value" data-invest-monthly>£0</span>
           </div>
-          <div class="transfer-list">
-            <div class="transfer-row">
-              <div>
-                <div class="strong">Alex</div>
-                <div class="muted">£42.00 · Grocery split</div>
-              </div>
-              <span class="badge success">Sent</span>
-            </div>
-            <div class="transfer-row">
-              <div>
-                <div class="strong">Rent</div>
-                <div class="muted">£900.00 · Standing order</div>
-              </div>
-              <span class="badge info">Scheduled</span>
-            </div>
-            <div class="transfer-row">
-              <div>
-                <div class="strong">Utilities</div>
-                <div class="muted">£120.00 · Energy</div>
-              </div>
-              <span class="badge muted">Pending</span>
-            </div>
+          <div class="summary-line">
+            <span class="muted">Risk</span>
+            <span class="summary-value" data-invest-risk>Balanced</span>
+          </div>
+          <div class="summary-line">
+            <span class="muted">Allocation</span>
+            <span class="summary-value" data-invest-allocation>—</span>
           </div>
         </section>
+
+        <div class="actions">
+          <button class="button primary" type="button" data-invest-start>Start investing</button>
+          <a class="button secondary" href="invest-plan.html">Back</a>
+        </div>
+
+        <p class="muted footnote">Illustrative. Not financial advice.</p>
       </div>
 
-      <nav class="bottom-nav" data-bottom-nav data-nav-active="payments.html">
+      <nav class="bottom-nav" data-bottom-nav data-nav-active="smart-invest.html">
         <a class="nav-item" href="dashboard.html" data-nav-target="dashboard.html">
           <span class="nav-icon" aria-hidden="true">🏠</span>
           <span class="nav-label">Home</span>
@@ -111,6 +85,20 @@
           <span class="nav-label">Smart Invest</span>
         </a>
       </nav>
+
+      <div class="modal" data-invest-success-modal hidden>
+        <div class="modal-backdrop" data-close-modal></div>
+        <div class="modal-content success-card">
+          <div class="tick-circle" data-success-tick>
+            <svg viewBox="0 0 52 52" role="presentation">
+              <circle class="tick-path-bg" cx="26" cy="26" r="24" fill="none" stroke="currentColor" stroke-width="2" opacity="0.2"/>
+              <path class="tick-path" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" d="M14 27l7 7 16-16"/>
+            </svg>
+          </div>
+          <h3>Plan activated</h3>
+          <p class="muted">We'll invest and monitor for you.</p>
+        </div>
+      </div>
     </div>
   </div>
 

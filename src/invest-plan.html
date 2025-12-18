@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Payments - Neura Bank</title>
+  <title>Invest plan - Neura Bank</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -33,63 +33,44 @@
 
       <div class="screen has-bottom-nav">
         <header class="header brand-header">
-          <img class="logo-small" src="../assets/logo.svg" alt="Neura Bank logo">
+          <button class="back-btn" aria-label="Go back" data-back>‹</button>
           <div class="title-stack">
-            <div class="brand-name">Payments</div>
-            <div class="muted">Send domestically or let AI optimise FX</div>
+            <div class="brand-name">Your AI plan</div>
+            <div class="muted">Dynamic allocation based on your answers</div>
           </div>
-          <span class="pill pill-muted">Smart</span>
         </header>
 
-        <div class="card payment-grid">
-          <a class="payment-card" href="send-money.html">
-            <div>
-              <div class="section-title">Send money</div>
-              <p class="muted">UK to UK · instant and free</p>
-            </div>
-            <span class="chevron" aria-hidden="true">›</span>
-          </a>
-          <a class="payment-card accent" href="intl-start.html">
-            <div>
-              <div class="section-title">International transfer</div>
-              <p class="muted">AI optimised fees + FX routing</p>
-            </div>
-            <span class="chevron" aria-hidden="true">›</span>
-          </a>
+        <section class="card" data-invest-plan>
+          <div class="section-heading">
+            <div class="section-title">Allocation</div>
+            <span class="muted" data-invest-risk-label>Balanced</span>
+          </div>
+          <div class="allocation-bars">
+            <div class="allocation-bar equity" data-alloc-equity><span>Equity</span></div>
+            <div class="allocation-bar bonds" data-alloc-bonds><span>Bonds</span></div>
+            <div class="allocation-bar cash" data-alloc-cash><span>Cash</span></div>
+          </div>
+          <div class="muted" data-invest-goal-label>Goal: Balanced</div>
+        </section>
+
+        <section class="card projection-card" data-invest-projection>
+          <div class="section-heading">
+            <div class="section-title">10-year projection</div>
+            <span class="pill pill-outline" data-invest-return>6% expected</span>
+          </div>
+          <div class="projection-value" data-invest-projected>£0</div>
+          <p class="muted">Based on your monthly contributions and assumed return.</p>
+        </section>
+
+        <div class="actions">
+          <a class="button secondary" href="invest-quiz.html">Adjust</a>
+          <a class="button primary" href="invest-confirm.html">Continue</a>
         </div>
 
-        <section class="card">
-          <div class="section-heading">
-            <div class="section-title">Recent transfers</div>
-            <span class="muted">Today</span>
-          </div>
-          <div class="transfer-list">
-            <div class="transfer-row">
-              <div>
-                <div class="strong">Alex</div>
-                <div class="muted">£42.00 · Grocery split</div>
-              </div>
-              <span class="badge success">Sent</span>
-            </div>
-            <div class="transfer-row">
-              <div>
-                <div class="strong">Rent</div>
-                <div class="muted">£900.00 · Standing order</div>
-              </div>
-              <span class="badge info">Scheduled</span>
-            </div>
-            <div class="transfer-row">
-              <div>
-                <div class="strong">Utilities</div>
-                <div class="muted">£120.00 · Energy</div>
-              </div>
-              <span class="badge muted">Pending</span>
-            </div>
-          </div>
-        </section>
+        <p class="muted footnote">Illustrative. Not financial advice.</p>
       </div>
 
-      <nav class="bottom-nav" data-bottom-nav data-nav-active="payments.html">
+      <nav class="bottom-nav" data-bottom-nav data-nav-active="smart-invest.html">
         <a class="nav-item" href="dashboard.html" data-nav-target="dashboard.html">
           <span class="nav-icon" aria-hidden="true">🏠</span>
           <span class="nav-label">Home</span>
